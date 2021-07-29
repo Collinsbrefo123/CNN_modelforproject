@@ -3,18 +3,136 @@
 {% block title %}Home page{% endblock %}
 
 {% block content %}
-    <h2>API Page</h2>
-    <div class="container">
-     <h3>My Google Maps Demo</h3>
-    <!--The div element for the map -->
-    <div id="map"></div>
 
-    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
-    <script
-      src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap&libraries=&v=weekly"
-      async
-    ></script>
+    <div class="bg-info pb-5">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">Transmission line</a>
 
+
+            <div class="collapse navbar-collapse " id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#">About</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <h2>API Page</h2>
+        <div class=" p-4 mx-auto bg-secondary rounded" style="width: 70rem;">
+            <div class="form-group">
+
+                <select id="src" class="form-control form-control-lg src">
+                    <option selected disabled="disabled">Tower Source</option>
+                    {% for Tower in Towers %}
+                        <option value='{"lat":"{{ Tower.latitude }}","lng":"{{ Tower.longitude }}"}'>{{ Tower.towername }}</option>
+                    {% endfor %}
+                </select>
+
+            </div>
+            <select id="dest" class="form-control form-control-lg dest">
+                <option selected disabled="disabled">Tower Destination</option>
+                {% for Tower in Towers %}
+                    {#                    <option value='{"num_sequence":[{{ Tower.latitude }}, {{ Tower.longitude }}]}'>{{ Tower.towername }}</option>#}
+                    <option value='{"lat":"{{ Tower.latitude }}","lng":"{{ Tower.longitude }}"}'>{{ Tower.towername }}</option>
+                {% endfor %}
+            </select>
+            <div class="text-center pt-3">
+                <button class="btn btn-info ">View map</button>
+
+            </div>
+            <div class="pt-3">
+                <h2>
+                    Preview of the tower Locations
+                    <div class="mx-auto" id="map">
+
+                    </div>
+                </h2>
+            </div>
+
+
+        </div>
+
+        <script language="JavaScript" type="text/javascript"
+                src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
+
+        <script>
+            var coordinates1;
+            var coordinates2;
+            $("button").click(function () {
+
+                $.each($(".src option:selected"), function () {
+                    {#var coordinates = $(this).val()#}
+                    coordinates1 = $.parseJSON($(this).val())
+                    console.log(coordinates1.lng);
+                });
+                $.each($(".dest option:selected"), function () {
+                    {#var coordinates = $(this).val()#}
+                    coordinates2 = $.parseJSON($(this).val())
+                    console.log(coordinates2.lng);
+                });
+
+                var options = {
+
+                    center: {
+                        lat: parseFloat(coordinates1.lat),
+                        lng: parseFloat(coordinates1.lng),
+                        lat: parseFloat(coordinates2.lat),
+                        lng: parseFloat(coordinates2.lng)
+                    },
+                    zoom: 16,
+                    mapTypeId: "satellite",
+                }
+
+                var map = new google.maps.Map(document.getElementById('map'), options)
+            });
+
+            function initMap() {
+                var options = {
+
+                    center: {lat: 5.65267, lng: -0.107658, lat: 5.662799131, lng: -0.082503074},
+                    zoom: 14,
+                    mapTypeId: "satellite",
+                }
+
+                var map = new google.maps.Map(document.getElementById('map'), options)
+            }
+
+            {#function viewMap() {#}
+            {#    console.log('Ready one')#}
+            {#    $("select.src").change(function () {#}
+            {#        console.log('source')#}
+            {#    });#}
+
+
+        </script>
+
+        {#        <script>#}
+        {#            $(document).ready(function () {#}
+        {#                $("button").click(function () {#}
+        {##}
+        {#                    $.each($(".src option:selected"), function () {#}
+        {#var coordinates = $(this).val()#}
+        {#                        var coordinates1 = $.parseJSON($(this).val())#}
+        {#                        console.log(coordinates1.lng);#}
+        {#                    });#}
+        {#                    $.each($(".dest option:selected"), function () {#}
+        {#var coordinates = $(this).val()#}
+        {#                        var coordinates2 = $.parseJSON($(this).val())#}
+        {#                        console.log(coordinates2.lng);#}
+        {#                    });#}
+        {#                });#}
+        {#            });#}
+        {#        </script>#}
+
+        <script async
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSL1bMYM92O4d3MME-bmDchsyYR6wwTbQ&callback=initMap">
+        </script>
     </div>
 
 

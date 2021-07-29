@@ -22,7 +22,8 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     # model urls
-    path('home/', views.homeconvo, name='homeconvo'),
+    path('', views.homepage, name='homepage'),
+    path('conv/', views.homeconvo, name='homeconvo'),
     path('predict/', views.predictImg, name='predictImg'),
 
     # google test url

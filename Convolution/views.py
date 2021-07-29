@@ -6,20 +6,21 @@ from django.shortcuts import render
 from tensorflow import Graph
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
+import numpy as np
+from .models import CorridorLine,TowerName
 
 tf.compat.v1.Session()
 
-img_height, img_width = 100, 100
-with open('models/imagenet_classes.json', 'r') as f:
-    labelInfo = f.read()
+img_height, img_width = 80, 80
 
-labelInfo = json.loads(labelInfo)
 
-model_graph = Graph()
-with model_graph.as_default():
-    tf_session = tf.compat.v1.Session()
-    with tf_session.as_default():
-        model = load_model('models/ConvolutionNeuralNetwork_v1.h5')
+
+model = load_model('models/ConvolutionNeuralNetwork_v1.h5')
+
+
+def homepage(request):
+    return render(request, 'Convolution/homepage.html')
+
 
 
 def homeconvo(request):
@@ -35,22 +36,22 @@ def predictImg(request):
         file = request.FILES.get('filePath')
         print(file)
         fs = FileSystemStorage()
-        filepathname = fs.save(file.name, content=file)
-        filepathname = fs.url(filepathname)
-        testImage = '.' + filepathname
+        filepath = fs.save(file.name, content=file)
+        filepath = fs.url(filepath)
+        testImage = '.' + filepath
         img = image.load_img(testImage, target_size=(img_height, img_width))
         x = image.img_to_array(img)
         x = x / 255
         x = x.reshape(1, img_height, img_width, 3)
-        with model_graph.as_default():
-            with tf_session.as_default():
-                predi = model.predict(x)
-                print(predi)
 
-        import numpy as np
-        predictedLabel = labelInfo[str(np.argmax(predi[0]))]
+        X = image.img_to_array(img)
+        images = np.expand_dims(X, axis=0)
+        val = model.predict(images)
+        print(images)
+        print(val)
 
-        return render(request, 'Convolution/homeconvo.html', {'filePathName': filepathname, 'predictedLabel': predictedLabel})
+
+        return render(request, 'Convolution/homeconvo.html', {'filePathName': val})
 
 
 
@@ -62,4 +63,6 @@ def transmission(request):
     return render(request, 'Convolution/home_trans.html')
 
 def googlepage(request):
-    return render(request, 'Convolution/googlepage.html')
+    Towers = TowerName.objects.all()
+    print(Towers[0].towername)
+    return render(request, 'Convolution/googlepage.html',{'Towers':Towers})
