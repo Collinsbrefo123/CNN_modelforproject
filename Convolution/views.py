@@ -7,13 +7,11 @@ from tensorflow import Graph
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 import numpy as np
-from .models import CorridorLine,TowerName
+from .models import CorridorLine, TowerName, TowerImages
 
 tf.compat.v1.Session()
 
 img_height, img_width = 80, 80
-
-
 
 model = load_model('models/ConvolutionNeuralNetwork_v1.h5')
 
@@ -22,9 +20,10 @@ def homepage(request):
     return render(request, 'Convolution/homepage.html')
 
 
-
 def homeconvo(request):
-    return render(request, 'Convolution/homeconvo.html')
+    Towers = TowerName.objects.all()
+    print(Towers[0].towername)
+    return render(request, 'Convolution/homeconvo.html', {'Towers': Towers})
 
 
 # for taking file to system is request.FILES
@@ -50,9 +49,7 @@ def predictImg(request):
         print(images)
         print(val)
 
-
         return render(request, 'Convolution/homeconvo.html', {'filePathName': val})
-
 
 
 def loginpage(request):
@@ -62,7 +59,22 @@ def loginpage(request):
 def transmission(request):
     return render(request, 'Convolution/home_trans.html')
 
+
 def googlepage(request):
     Towers = TowerName.objects.all()
     print(Towers[0].towername)
-    return render(request, 'Convolution/googlepage.html',{'Towers':Towers})
+    return render(request, 'Convolution/googlepage.html', {'Towers': Towers})
+
+
+def detection(request):
+    if request.method =='GET':
+        Images = TowerImages.objects.all()
+        print(Images[0].towerlocation)
+        return render(request, 'Convolution/detection.html', {'imagesexample': Images[0].towerimage, 'TowerImages':Images})
+    else:
+        is_private = request.POST.get('imagetower', False)
+        print(is_private)
+        Images = TowerImages.objects.all()
+        Images1 = TowerImages.objects.filter(towerlocation=is_private)
+        print(Images1)
+        return render(request, 'Convolution/detection.html', {'imagesexample': Images1[0].towerimage, 'TowerImages':Images})

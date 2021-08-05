@@ -4,8 +4,8 @@
 
 {% block content %}
 
-    <div class="bg-info pb-4">
-          <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="bg-info pb-5">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <a class="navbar-brand" href="#">Transmission line</a>
 
 
@@ -23,84 +23,236 @@
                 </ul>
             </div>
         </nav>
+        <h2>API Page</h2>
+        <div class=" p-4 mx-auto bg-secondary rounded" style="width: 70rem;">
+            <div class="form-group">
 
+                <select id="src" class="form-control form-control-lg src">
+                    <option selected disabled="disabled">Tower Source</option>
+                    {% for Tower in Towers %}
+                        <option value='{"lat":"{{ Tower.latitude }}","lng":"{{ Tower.longitude }}"}'>{{ Tower.towername }}</option>
+                    {% endfor %}
+                </select>
 
-
-
-        <div class="container pt-4">
-        <div class=" p-4 mx-auto bg-secondary rounded" style="width: 30rem;">
-            <form action="{% url 'transmission' %}">
-                <div class="form-group">
-
-             <select class="form-control form-control-lg">
-              <option>Tower Source</option>
-              <option>Tower 1</option>
-              <option>Tower 2</option>
-              <option>Tower 3</option>
-              <option>Tower 4</option>
-              <option>Tower 5</option>
-              <option>Tower 6</option>
-              <option>Tower 7</option>
-              <option>Tower 8</option>
+            </div>
+            <select id="dest" class="form-control form-control-lg dest">
+                <option selected disabled="disabled">Tower Destination</option>
+                {% for Tower in Towers %}
+                    {#                    <option value='{"num_sequence":[{{ Tower.latitude }}, {{ Tower.longitude }}]}'>{{ Tower.towername }}</option>#}
+                    <option value='{"lat":"{{ Tower.latitude }}","lng":"{{ Tower.longitude }}"}'>{{ Tower.towername }}</option>
+                {% endfor %}
             </select>
+            <div class="text-center pt-3">
+                <button class="btn btn-info ">View map</button>
 
-                </div>
-                 <select class="form-control form-control-lg">
-              <option>Tower Destination</option>
-              <option>Tower 1</option>
-              <option>Tower 2</option>
-              <option>Tower 3</option>
-              <option>Tower 4</option>
-              <option>Tower 5</option>
-              <option>Tower 6</option>
-              <option>Tower 7</option>
-              <option>Tower 8</option>
-            </select>
-                <div class="pt-3">
-                    <h2>
-                        Preview of the tower Locations
-                    </h2>
-                </div>
+            </div>
+            <div class="pt-3">
+                <h2>
+                    Preview of the tower Locations
+                    <div class="mx-auto" id="map">
 
-                     <div class="form-group text-white">
-                    <label for="exampleFormControlFile1 ">File to be submitted for Encroachment Detection</label>
-                    <input type="file" class="form-control-file" id="exampleFormControlFile1">
                     </div>
-
-                <div class="text-center pt-3">
-                    <button type="submit" class="btn btn-info ">Submit</button>
-
-                </div>
+                </h2>
+            </div>
 
 
-            </form>
         </div>
 
-    </div>
-    <br><br><br>
-    <h2>Uplaod Image for Classification</h2>
+
+        <script language="JavaScript" type="text/javascript"
+                src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
+
+        <script>
+            var coordinates1;
+            var coordinates2;
+            $("button").click(function () {
+
+                $.each($(".src option:selected"), function () {
+                    {#var coordinates = $(this).val()#}
+                    coordinates1 = $.parseJSON($(this).val())
+
+                });
+                $.each($(".dest option:selected"), function () {
+                    {#var coordinates = $(this).val()#}
+                    coordinates2 = $.parseJSON($(this).val())
+                    console.log(coordinates2.lng);
+                    console.log(coordinates2.lat);
+                    console.log(parseFloat(coordinates2.lng)-0.002);
+                    console.log(parseFloat(coordinates2.lat)+0.01);
+                });
+
+                var options = {
+
+                    center: {
+                        lat: parseFloat(coordinates1.lat),
+                        lng: parseFloat(coordinates1.lng),
+                        lat: parseFloat(coordinates2.lat),
+                        lng: parseFloat(coordinates2.lng)
+                    },
+                    zoom: 18,
+                    mapTypeId: "satellite",
+                }
+
+                var map = new google.maps.Map(document.getElementById('map'), options)
+            });
+
+            function initMap() {
+                var options = {
+
+                    center: {lat: 5.65267, lng: -0.107658, lat: 5.662799131, lng: -0.082503074},
+                    zoom: 14,
+                    mapTypeId: "satellite",
+                }
+
+                var map = new google.maps.Map(document.getElementById('map'), options)
+            }
+
+            {#function initMap() {#}
+            {#    const map = new google.maps.Map(document.getElementById("map"), {#}
+            {#        zoom: 17.5,#}
+            {#        center: {lat: 5.652726, lng: -0.106476},#}
+            {#        mapTypeId: "satellite",#}
+            {#    });#}
+            {#    const flightPlanCoordinates = [#}
+            {#        {lat: 5.652793, lng: -0.107693},#}
+            {#        {lat: 5.653610, lng: -0.105723},#}
+            {#        {lat: 5.652553, lng: -0.105351},#}
+            {#        {lat: 5.651778, lng: -0.107281},#}
+            {#        {lat: 5.652793, lng: -0.107693},#}
+            {#    ];#}
+            {#    const flightPath = new google.maps.Polyline({#}
+            {#        path: flightPlanCoordinates,#}
+            {#        geodesic: true,#}
+            {#        strokeColor: "#FF0000",#}
+            {#        strokeOpacity: 1.0,#}
+            {#        strokeWeight: 2,#}
+            {#    });#}
+            {#    flightPath.setMap(map);#}
+            {#}#}
+
+            {#function viewMap() {#}
+            {#    console.log('Ready one')#}
+            {#    $("select.src").change(function () {#}
+            {#        console.log('source')#}
+            {#    });#}
 
 
+        </script>
 
-
-    <form method="post" enctype="multipart/form-data" action="{% url 'predictImg' %}">
-
-        {% csrf_token %}
-        <div class="col-md-4 col-sm-4"><label for="fname">Upload Image File Here:</label></div>
-        <input name="filePath"  type="file"><br><br>
-        <br>
-
-
-        <input type="submit" value="Submit"></div>
-
-
-
-    </form>
-{#       <h2>The classification of the image is</h2>#}
-{#        {{ filePathName }}#}
-
+        <script async
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSL1bMYM92O4d3MME-bmDchsyYR6wwTbQ&callback=initMap">
+        </script>
     </div>
 
 
 
 {% endblock %}
+
+
+
+{#{% extends 'Convolution/base.html' %}#}
+{##}
+{#{% block title %}Home page{% endblock %}#}
+{##}
+{#{% block content %}#}
+{##}
+{#    <div class="bg-info pb-4">#}
+{#          <nav class="navbar navbar-expand-lg navbar-dark bg-dark">#}
+{#            <a class="navbar-brand" href="#">Transmission line</a>#}
+{##}
+{##}
+{#            <div class="collapse navbar-collapse " id="navbarNav">#}
+{#                <ul class="navbar-nav ml-auto">#}
+{#                    <li class="nav-item active">#}
+{#                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>#}
+{#                    </li>#}
+{#                    <li class="nav-item">#}
+{#                        <a class="nav-link" href="#">Features</a>#}
+{#                    </li>#}
+{#                    <li class="nav-item">#}
+{#                        <a class="nav-link disabled" href="#">About</a>#}
+{#                    </li>#}
+{#                </ul>#}
+{#            </div>#}
+{#        </nav>#}
+{##}
+{##}
+{##}
+{##}
+{#        <div class="container pt-4">#}
+{#        <div class=" p-4 mx-auto bg-secondary rounded" style="width: 30rem;">#}
+{#            <form action="{% url 'transmission' %}">#}
+{#                <div class="form-group">#}
+{##}
+{#             <select class="form-control form-control-lg">#}
+{#              <option>Tower Source</option>#}
+{#              <option>Tower 1</option>#}
+{#              <option>Tower 2</option>#}
+{#              <option>Tower 3</option>#}
+{#              <option>Tower 4</option>#}
+{#              <option>Tower 5</option>#}
+{#              <option>Tower 6</option>#}
+{#              <option>Tower 7</option>#}
+{#              <option>Tower 8</option>#}
+{#            </select>#}
+{##}
+{#                </div>#}
+{#                 <select class="form-control form-control-lg">#}
+{#              <option>Tower Destination</option>#}
+{#              <option>Tower 1</option>#}
+{#              <option>Tower 2</option>#}
+{#              <option>Tower 3</option>#}
+{#              <option>Tower 4</option>#}
+{#              <option>Tower 5</option>#}
+{#              <option>Tower 6</option>#}
+{#              <option>Tower 7</option>#}
+{#              <option>Tower 8</option>#}
+{#            </select>#}
+{#                <div class="pt-3">#}
+{#                    <h2>#}
+{#                        Preview of the tower Locations#}
+{#                    </h2>#}
+{#                </div>#}
+{##}
+{#                     <div class="form-group text-white">#}
+{#                    <label for="exampleFormControlFile1 ">File to be submitted for Encroachment Detection</label>#}
+{#                    <input type="file" class="form-control-file" id="exampleFormControlFile1">#}
+{#                    </div>#}
+{##}
+{#                <div class="text-center pt-3">#}
+{#                    <button type="submit" class="btn btn-info ">Submit</button>#}
+{##}
+{#                </div>#}
+{##}
+{##}
+{#            </form>#}
+{#        </div>#}
+{##}
+{#    </div>#}
+{#    <br><br><br>#}
+{#    <h2>Uplaod Image for Classification</h2>#}
+{##}
+{##}
+{##}
+{##}
+{#    <form method="post" enctype="multipart/form-data" action="{% url 'predictImg' %}">#}
+{##}
+{#        {% csrf_token %}#}
+{#        <div class="col-md-4 col-sm-4"><label for="fname">Upload Image File Here:</label></div>#}
+{#        <input name="filePath"  type="file"><br><br>#}
+{#        <br>#}
+{##}
+{##}
+{#        <input type="submit" value="Submit"></div>#}
+{##}
+{##}
+{##}
+{#    </form>#}
+{#       <h2>The classification of the image is</h2>#}
+{#        {{ filePathName }}#}
+{##}
+{#    </div>#}
+{##}
+{##}
+{##}
+{#{% endblock %}#}
