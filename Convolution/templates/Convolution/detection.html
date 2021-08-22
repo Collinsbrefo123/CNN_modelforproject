@@ -25,27 +25,35 @@
         </nav>
         <h2>API Page</h2>
         <div class=" p-4 mx-auto bg-secondary rounded" style="width: 70rem;">
-            <form action="{% url 'detection' %}"method="POST">
-            {% csrf_token %}
-                            <select name="imagetower" id="dest" class="form-control form-control-lg dest">
-                <option selected disabled="disabled">Tower Destination</option>
-                {% for Image in TowerImages %}
-                    <option  value="{{ Image }}">{{ Image.towerlocation }}</option>
-                {% endfor %}
-            </select>
-                        <div class="text-center pt-3">
-                <button class="btn btn-info ">View map</button>
+            <form action="{% url 'detection' %}" method="POST">
+                {% csrf_token %}
+                <select name="imagetower" id="dest" class="form-control form-control-lg dest">
+                    <option selected disabled="disabled">Tower Destination</option>
+                    {% for Image in TowerImages %}
+                        <option value="{{ Image }}">{{ Image.towerlocation }}</option>
+                    {% endfor %}
+                </select>
+                <div class="text-center pt-3">
+                    <button class="btn btn-info ">View map</button>
 
-            </div>
+                </div>
 
 
             </form>
             <div class="pt-3">
                 <h2>
-                    Preview of the tower Locations
-                    <div class="mx-auto" id="map">
-                     <img class="rounded img-fluid pt-3" src="http://127.0.0.1:8000/media/{{ imagesexample }}" width="600px" alt="">
-                    </div>
+                    <form method="post" action="{% url 'modelprediction' %}">
+                        {% csrf_token %}
+                        Preview of the tower Locations
+                        <div class="mx-auto" id="map">
+                            <img class="rounded img-fluid pt-3" name="towerImage" src="http://127.0.0.1:8000/media/{{ imagesexample }}"
+                                 width="600px" alt="">
+                        </div>
+                        <div class="text-center mx-auto">
+                            <button class=" btn btn-info">Submit for detection</button>
+                        </div>
+                    </form>
+
                 </h2>
             </div>
 
@@ -56,60 +64,60 @@
             <img src="http://127.0.0.1:8000/media/{{ imagesexample }}" width="400px" alt="">
         </div>
 
-{#        <script language="JavaScript" type="text/javascript"#}
-{#                src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>#}
+        {#        <script language="JavaScript" type="text/javascript"#}
+        {#                src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>#}
 
-{#        <script>#}
-{#            var coordinates1;#}
-{#            var coordinates2;#}
-{#            $("button").click(function () {#}
-{##}
-{#                $.each($(".src option:selected"), function () {#}
-                    {#var coordinates = $(this).val()#}
-{#                    coordinates1 = $.parseJSON($(this).val())#}
-{#                    console.log(coordinates1.lng);#}
-{#                });#}
-{#                $.each($(".dest option:selected"), function () {#}
-                    {#var coordinates = $(this).val()#}
-{#                    coordinates2 = $.parseJSON($(this).val())#}
-{#                    console.log(coordinates2.lng);#}
-{#                });#}
-{##}
-{#                var options = {#}
-{##}
-{#                    center: {#}
-{#                        lat: parseFloat(coordinates1.lat),#}
-{#                        lng: parseFloat(coordinates1.lng),#}
-{#                        lat: parseFloat(coordinates2.lat),#}
-{#                        lng: parseFloat(coordinates2.lng)#}
-{#                    },#}
-{#                    zoom: 19,#}
-{#                    mapTypeId: "satellite",#}
-{#                }#}
-{##}
-{#                var map = new google.maps.Map(document.getElementById('map'), options)#}
-{#            });#}
-{##}
-{#            function initMap() {#}
-{#                var options = {#}
-{##}
-{#                    center: {lat: 5.65267, lng: -0.107658, lat: 5.662799131, lng: -0.082503074},#}
-{#                    zoom: 14,#}
-{#                    mapTypeId: "satellite",#}
-{#                }#}
-{##}
-{#                var map = new google.maps.Map(document.getElementById('map'), options)#}
-{#                map.setTilt(0);#}
-{#            }#}
-{##}
-            {#function viewMap() {#}
-            {#    console.log('Ready one')#}
-            {#    $("select.src").change(function () {#}
-            {#        console.log('source')#}
-            {#    });#}
-{##}
-{##}
-{#        </script>#}
+        {#        <script>#}
+        {#            var coordinates1;#}
+        {#            var coordinates2;#}
+        {#            $("button").click(function () {#}
+        {##}
+        {#                $.each($(".src option:selected"), function () {#}
+        {#var coordinates = $(this).val()#}
+        {#                    coordinates1 = $.parseJSON($(this).val())#}
+        {#                    console.log(coordinates1.lng);#}
+        {#                });#}
+        {#                $.each($(".dest option:selected"), function () {#}
+        {#var coordinates = $(this).val()#}
+        {#                    coordinates2 = $.parseJSON($(this).val())#}
+        {#                    console.log(coordinates2.lng);#}
+        {#                });#}
+        {##}
+        {#                var options = {#}
+        {##}
+        {#                    center: {#}
+        {#                        lat: parseFloat(coordinates1.lat),#}
+        {#                        lng: parseFloat(coordinates1.lng),#}
+        {#                        lat: parseFloat(coordinates2.lat),#}
+        {#                        lng: parseFloat(coordinates2.lng)#}
+        {#                    },#}
+        {#                    zoom: 19,#}
+        {#                    mapTypeId: "satellite",#}
+        {#                }#}
+        {##}
+        {#                var map = new google.maps.Map(document.getElementById('map'), options)#}
+        {#            });#}
+        {##}
+        {#            function initMap() {#}
+        {#                var options = {#}
+        {##}
+        {#                    center: {lat: 5.65267, lng: -0.107658, lat: 5.662799131, lng: -0.082503074},#}
+        {#                    zoom: 14,#}
+        {#                    mapTypeId: "satellite",#}
+        {#                }#}
+        {##}
+        {#                var map = new google.maps.Map(document.getElementById('map'), options)#}
+        {#                map.setTilt(0);#}
+        {#            }#}
+        {##}
+        {#function viewMap() {#}
+        {#    console.log('Ready one')#}
+        {#    $("select.src").change(function () {#}
+        {#        console.log('source')#}
+        {#    });#}
+        {##}
+        {##}
+        {#        </script>#}
 
         {#        <script>#}
         {#            $(document).ready(function () {#}

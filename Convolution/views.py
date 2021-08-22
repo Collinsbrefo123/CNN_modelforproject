@@ -1,19 +1,28 @@
-import json
-
 import tensorflow as tf
 from django.core.files.storage import FileSystemStorage
-from django.shortcuts import render
-from tensorflow import Graph
-from tensorflow.keras.models import load_model
+from django.shortcuts import render, redirect
+from .models import CorridorLine, TowerName, TowerImages
 from tensorflow.keras.preprocessing import image
 import numpy as np
-from .models import CorridorLine, TowerName, TowerImages
+import tensorflow as tf
+from tensorflow.keras.models import load_model
+global graph,model
+#initializing the graph
+graph = tf.compat.v1.get_default_graph
 
-tf.compat.v1.Session()
+print("Keras model loading.......")
 
-img_height, img_width = 80, 80
+model = load_model(r'C:\Users\kbref\Desktop\computer_vision\Convolutional_NN\Convolution\models\TestModel1.h5')
+print('Model Loaded')
 
-model = load_model('models/ConvolutionNeuralNetwork_v1.h5')
+
+#creating a class dictionary
+class_dict = {
+    'House': 0,
+    'Land': 1
+}
+
+class_names = list(class_dict.keys())
 
 
 def homepage(request):
@@ -28,28 +37,8 @@ def homeconvo(request):
 
 # for taking file to system is request.FILES
 def predictImg(request):
-    if request.method == 'GET':
-        return render(request, 'Convolution/homeconvo.html')
-    else:
-        print(request.FILES.get('filePath'))
-        file = request.FILES.get('filePath')
-        print(file)
-        fs = FileSystemStorage()
-        filepath = fs.save(file.name, content=file)
-        filepath = fs.url(filepath)
-        testImage = '.' + filepath
-        img = image.load_img(testImage, target_size=(img_height, img_width))
-        x = image.img_to_array(img)
-        x = x / 255
-        x = x.reshape(1, img_height, img_width, 3)
+    return render(request, 'Convolution/homeconvo.html')
 
-        X = image.img_to_array(img)
-        images = np.expand_dims(X, axis=0)
-        val = model.predict(images)
-        print(images)
-        print(val)
-
-        return render(request, 'Convolution/homeconvo.html', {'filePathName': val})
 
 
 def loginpage(request):
@@ -72,9 +61,20 @@ def detection(request):
         print(Images[0].towerlocation)
         return render(request, 'Convolution/detection.html', {'imagesexample': Images[0].towerimage, 'TowerImages':Images})
     else:
-        is_private = request.POST.get('imagetower', False)
-        print(is_private)
+        imagetower = request.POST.get('imagetower', False)
+        # print(imagetower)
         Images = TowerImages.objects.all()
-        Images1 = TowerImages.objects.filter(towerlocation=is_private)
-        print(Images1)
+        Images1 = TowerImages.objects.filter(towerlocation=imagetower)
+        # print(Images1)
         return render(request, 'Convolution/detection.html', {'imagesexample': Images1[0].towerimage, 'TowerImages':Images})
+
+def modelprediction(request):
+    if request.method == 'POST':
+        myfile = request.FILES.get('imagetower')
+        Images1 = TowerImages.objects.filter(towerlocation=myfile)
+
+        # img = image.load_img(myfile)
+        print(request)
+        return render(request, 'Convolution/model.html')
+    else:
+        return redirect('detection')

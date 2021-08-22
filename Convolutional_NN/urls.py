@@ -26,6 +26,7 @@ urlpatterns = [
     path('conv/', views.homeconvo, name='homeconvo'),
     path('predict/', views.predictImg, name='predictImg'),
     path('detection/', views.detection, name='detection'),
+    path('model/', views.modelprediction, name='modelprediction'),
 
     # google test url
     path('login/', views.loginpage, name='loginpage'),
