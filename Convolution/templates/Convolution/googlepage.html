@@ -15,7 +15,7 @@
                         <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Features</a>
+                        <a class="nav-link" href="{% url 'detection' %}">Features</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link disabled" href="#">About</a>
@@ -85,7 +85,7 @@
                         lat: parseFloat(coordinates2.lat),
                         lng: parseFloat(coordinates2.lng)
                     },
-                    zoom: 19,
+                    zoom: 16,
                     mapTypeId: "satellite",
                 }
 
@@ -96,7 +96,7 @@
                 var options = {
 
                     center: {lat: 5.65267, lng: -0.107658, lat: 5.662799131, lng: -0.082503074},
-                    zoom: 14,
+                    zoom: 20,
                     mapTypeId: "satellite",
                 }
 

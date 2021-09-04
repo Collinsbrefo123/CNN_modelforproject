@@ -15,7 +15,7 @@
                         <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Features</a>
+                        <a class="nav-link" href="{% url 'detection' %}">Features</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link disabled" href="#">About</a>
@@ -42,13 +42,23 @@
             </form>
             <div class="pt-3">
                 <h2>
-                    <form method="post" action="{% url 'modelprediction' %}">
+                    <form method="post" action="{% url 'modelprediction' %}" enctype='multipart/form-data'>
                         {% csrf_token %}
-                        Preview of the tower Locations
-                        <div class="mx-auto" id="map">
-                            <img class="rounded img-fluid pt-3" name="towerImage" src="http://127.0.0.1:8000/media/{{ imagesexample }}"
-                                 width="600px" alt="">
+                        Preview of the tower Location:{{  }}
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Email address</label>
+                            <input type="text" class="form-control" id="exampleInputEmail1"
+                                   aria-describedby="emailHelp" name="text" placeholder="Enter Text">
+                            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
+                                else.</small>
                         </div>
+                        <div class="mx-auto" id="map">
+                            <img class="rounded img-fluid pt-3" name="towerImage"
+                                 src="http://127.0.0.1:8000/media/{{ imagesexample }}"
+                                 width="600px" alt="">
+                            <input type="hidden" name="towerimages" value="{{ imagesexample }}">
+                        </div>
+
                         <div class="text-center mx-auto">
                             <button class=" btn btn-info">Submit for detection</button>
                         </div>

@@ -21,15 +21,14 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.loginpage, name='loginpage'),
     # model urls
-    path('', views.homepage, name='homepage'),
     path('conv/', views.homeconvo, name='homeconvo'),
     path('predict/', views.predictImg, name='predictImg'),
     path('detection/', views.detection, name='detection'),
     path('model/', views.modelprediction, name='modelprediction'),
 
     # google test url
-    path('login/', views.loginpage, name='loginpage'),
     path('txn_home/', views.transmission, name='transmission'),
     path('google/', views.googlepage, name='googlepage'),
 ]

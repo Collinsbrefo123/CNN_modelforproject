@@ -1,7 +1,7 @@
 {% extends 'Convolution/base.html' %}
 
 {% block title %}Detection page{% endblock %}
-    {% block content %}
+{% block content %}
 
     <div class=" pb-5">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -14,7 +14,7 @@
                         <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Features</a>
+                        <a class="nav-link" href="{% url 'detection' %}">Features</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link disabled" href="#">About</a>
@@ -24,16 +24,15 @@
         </nav>
         <h2 class="text-center">Model Prediction Page</h2>
         <div class=" p-4 mx-auto bg-secondary rounded" style="width: 40rem; height: 500px">
-            <div class="pt-3">
-                <h2>
-
-
-                </h2>
+            <h3>The number of abnormalities detected are {{ result_length }}</h3>
+            <div class="mx-auto">
+                <img class="rounded img-fluid pt-3" name="towerImage"
+                     src="http://127.0.0.1:8000/media/pictures/merge/{{ image }}"
+                     width="600px" alt="">
+                <input type="hidden" name="towerimages" value="{{ imagesexample }}">
             </div>
 
-
         </div>
-
 
 
     </div>
