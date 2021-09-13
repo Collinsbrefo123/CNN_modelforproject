@@ -34,8 +34,19 @@
 
         </div>
 
+        <div class="pt-3 text-center mx-auto">
+            <form action="{% url 'notification' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="tower_anomalies" value="{{ result_length }}">
+                <button class="btn btn-outline-primary btn-lg" onclick="">Notify the Maintenance</button>
+
+            </form>
+        </div>
 
     </div>
+
+
+
 
 
 

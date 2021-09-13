@@ -14,7 +14,7 @@ import numpy as np
 # import tensorflow as tf
 
 
-def crop_one_picture(filename, cols=200, rows=200):
+def crop_one_picture(filename, cols=100, rows=100):
     ##Read the color image, the transparency of the image (alpha channel) is ignored, the default parameter;
     ##grayscale image; read the original image, including the alpha channel; can be expressed as 1, 0, -1
     path = settings.MEDIA_ROOT
@@ -47,7 +47,7 @@ cols = 200  # Width of small pictures (number of columns)
 rows = 200  # Small picture height (number of lines)
 # crop_one_picture(filename)
 
-cnn = load_model(r'C:\Users\kbref\Desktop\computer_vision\Convolutional_NN\Convolution\my_models\detectorvx.h5')
+cnn = load_model(r'C:\Users\kbref\Desktop\computer_vision\Convolutional_NN\Convolution\my_models\WebModel_vx.h5')
 
 
 # print("model loaded")
@@ -59,7 +59,7 @@ def Model_Predictions():
     for filename in os.listdir(directory):
         pred = ["House", "Land"]
         input_path = os.path.join(directory, filename)
-        test_image = image.load_img(input_path, target_size=(64, 64, 3))
+        test_image = image.load_img(input_path, target_size=(128, 128, 3))
         # land_image = image.load_img(input_path, target_size=(128, 128, 3))
         test_image = image.img_to_array(test_image)
         test_image = np.expand_dims(test_image, axis=0)
@@ -74,11 +74,11 @@ def Model_Predictions():
 
             # threshold image
             ret, threshed_img = cv2.threshold(cv2.cvtColor(img, cv2.COLOR_BGR2GRAY),
-                                              127, 255, cv2.THRESH_BINARY)
+                                              150, 255, cv2.THRESH_BINARY)
             # find contours and get the external one
 
             contours, hier = cv2.findContours(threshed_img, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-
+            i=0
             for c in contours:
                 # get the bounding rect
                 x, y, w, h = cv2.boundingRect(c)
@@ -90,9 +90,10 @@ def Model_Predictions():
                 box = cv2.boxPoints(rect)
                 # convert all coordinates floating point values to int
                 box = np.int0(box)
+                i=i+1
 
             print(len(contours))
-            result_array.append(contours)
+            result_array.append(len(contours))
             # cv2.drawContours(img, contours, -1, (255, 255, 0), 1)
             directory_img = r'C:\Users\kbref\Desktop\computer_vision\Convolutional_NN\media\pictures\image_test'
             os.chdir(directory_img)

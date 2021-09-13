@@ -23,7 +23,7 @@
                 </ul>
             </div>
         </nav>
-        <h2>API Page</h2>
+        <h2 class="text-center">Encroachment Detection</h2>
         <div class=" p-4 mx-auto bg-secondary rounded" style="width: 70rem;">
             <form action="{% url 'detection' %}" method="POST">
                 {% csrf_token %}
@@ -44,14 +44,8 @@
                 <h2>
                     <form method="post" action="{% url 'modelprediction' %}" enctype='multipart/form-data'>
                         {% csrf_token %}
-                        Preview of the tower Location:{{  }}
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Email address</label>
-                            <input type="text" class="form-control" id="exampleInputEmail1"
-                                   aria-describedby="emailHelp" name="text" placeholder="Enter Text">
-                            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
-                                else.</small>
-                        </div>
+                        Preview of the tower Locations:{{ imagename }}
+
                         <div class="mx-auto" id="map">
                             <img class="rounded img-fluid pt-3" name="towerImage"
                                  src="http://127.0.0.1:8000/media/{{ imagesexample }}"

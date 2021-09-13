@@ -22,12 +22,13 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.loginpage, name='loginpage'),
+    path('logout/', views.logoutpage, name='logout'),
     # model urls
     path('conv/', views.homeconvo, name='homeconvo'),
     path('predict/', views.predictImg, name='predictImg'),
     path('detection/', views.detection, name='detection'),
     path('model/', views.modelprediction, name='modelprediction'),
-
+    path('notify/', views.notification, name= 'notification'),
     # google test url
     path('txn_home/', views.transmission, name='transmission'),
     path('google/', views.googlepage, name='googlepage'),

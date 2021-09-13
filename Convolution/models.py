@@ -29,6 +29,6 @@ class TowerName(models.Model):
 class TowerImages(models.Model):
     towerlocation = models.CharField(max_length=100, null=True)
     towerimage = models.ImageField(upload_to='media')
-
+    tower_line = models.ForeignKey(CorridorLine, on_delete=models.CASCADE, null=True)
     def __str__(self):
         return self.towerlocation
