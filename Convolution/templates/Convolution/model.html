@@ -7,29 +7,38 @@
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <a class="navbar-brand" href="#">Transmission line</a>
 
-
-            <div class="collapse navbar-collapse " id="navbarNav">
+            <div class=" collapse navbar-collapse " id="navbarNav">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    <li class="nav-item pt-1">
+                        <a class="nav-link" href="{% url 'googlepage' %}">View Corridor</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'detection' %}">Features</a>
+                    <li class="nav-item pt-1">
+                        <a class="nav-link" href="{% url 'detection' %}">Tower Detection</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled" href="#">About</a>
+                    <li class="nav-item pt-1">
+                        <a class="nav-link" href="https://rdjarbeng.users.earthengine.app/view/transmission-monitorv2">Change
+                            Detection</a>
                     </li>
+                    <li class="nav-item active pt-2">
+                        <form action="{% url 'logout' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-info">Logout</button>
+
+                        </form>
+                    </li>
+
                 </ul>
             </div>
         </nav>
+
         <h2 class="text-center">Model Prediction Page</h2>
         <div class=" p-4 mx-auto bg-secondary rounded" style="width: 40rem; height: 500px">
-            <h3>The number of abnormalities detected are {{ result_length }}</h3>
+            <h3>The number of abnormalities detected are {{ result_length }} in {{ towername }}</h3>
             <div class="mx-auto">
                 <img class="rounded img-fluid pt-3" name="towerImage"
                      src="http://127.0.0.1:8000/media/pictures/merge/{{ image }}"
                      width="600px" alt="">
-                <input type="hidden" name="towerimages" value="{{ imagesexample }}">
+                <input type="hidden" name="towernames" value="{{ image_name }}">
             </div>
 
         </div>
@@ -38,8 +47,10 @@
             <form action="{% url 'notification' %}" method="post">
                 {% csrf_token %}
                 <input type="hidden" name="tower_anomalies" value="{{ result_length }}">
-                <button class="btn btn-outline-primary btn-lg" onclick="">Notify the Maintenance</button>
+                <input type="hidden" name="towernames" value="{{ towername }}">
 
+                <button class="btn btn-outline-primary btn-lg" onclick="">Notify the Maintenance</button>
+                <a href="https://rdjarbeng.users.earthengine.app/view/transmission-monitorv2" class="pl-5 btn btn-lg btn-outline-dark" role="button" aria-pressed="true"> Track Changes</a>
             </form>
         </div>
 

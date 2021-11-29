@@ -47,14 +47,20 @@ cols = 200  # Width of small pictures (number of columns)
 rows = 200  # Small picture height (number of lines)
 # crop_one_picture(filename)
 
-cnn = load_model(r'C:\Users\kbref\Desktop\computer_vision\Convolutional_NN\Convolution\my_models\WebModel_vx.h5')
+# cnn = load_model(r'C:\Users\kbref\Desktop\computer_vision\Convolutional_NN\Convolution\my_models\WebModel_vxx.h5')
+from pathlib import Path
 
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+cnn = load_model(BASE_DIR / 'my_models/WebModel_vxx.h5')
 
 # print("model loaded")
 
 
 def Model_Predictions():
-    directory = r'C:\Users\kbref\Desktop\computer_vision\Convolutional_NN\media\pictures\crop_images'
+    # directory = r'C:\Users\kbref\Desktop\computer_vision\Convolutional_NN\media\pictures\crop_images'
+    directory = BASE_DIR / '../media/pictures/crop_images'
     result_array = []
     for filename in os.listdir(directory):
         pred = ["House", "Land"]
@@ -95,7 +101,8 @@ def Model_Predictions():
             print(len(contours))
             result_array.append(len(contours))
             # cv2.drawContours(img, contours, -1, (255, 255, 0), 1)
-            directory_img = r'C:\Users\kbref\Desktop\computer_vision\Convolutional_NN\media\pictures\image_test'
+            # directory_img = r'C:\Users\kbref\Desktop\computer_vision\Convolutional_NN\media\pictures\image_test'
+            directory_img = BASE_DIR / '../media/pictures/image_test'
             os.chdir(directory_img)
 
             # cv2.imshow("contours", img)
@@ -104,7 +111,8 @@ def Model_Predictions():
         ## end of contour code
         elif result_value == 'Land':
             print('This is a Bare Land')
-            directory_img = r'C:\Users\kbref\Desktop\computer_vision\Convolutional_NN\media\pictures\image_test'
+            # directory_img = r'C:\Users\kbref\Desktop\computer_vision\Convolutional_NN\media\pictures\image_test'
+            directory_img = BASE_DIR / '../media/pictures/image_test'
             os.chdir(directory_img)
             img = cv2.pyrDown(cv2.imread(input_path, cv2.IMREAD_UNCHANGED))
             # cv2.imshow("contours", img)
@@ -126,7 +134,9 @@ def file_name(root_path, picturetype):
 
 
 def merge_picture(mergename, num_of_cols=12, num_of_rows=7):
-    merge_path = r"C:\Users\kbref\Desktop\computer_vision\Convolutional_NN\media\pictures\image_test"
+    # merge_path = r"C:\Users\kbref\Desktop\computer_vision\Convolutional_NN\media\pictures\image_test"
+    merge_path = BASE_DIR / '../media/pictures/image_test'
+
     # The folder containing the small pictures to be merged
     filename_merge = file_name(merge_path, ".jpg")
     shape = cv2.imread(filename_merge[0]).shape  # Three-channel images need to change -1 to 1
@@ -143,7 +153,8 @@ def merge_picture(mergename, num_of_cols=12, num_of_rows=7):
     # merge destination
 
     #     cv2.imwrite(merge_path+"merge.jpg",dst)
-    directory_merge = r'C:\Users\kbref\Desktop\computer_vision\Convolutional_NN\media\pictures\merge'
+    # directory_merge = r'C:\Users\kbref\Desktop\computer_vision\Convolutional_NN\media\pictures\merge'
+    directory_merge = BASE_DIR / '../media/pictures/merge'
     os.chdir(directory_merge)
     savemerge_name = mergename + "merge.jpg"
     cv2.imwrite(savemerge_name, dst)
@@ -162,11 +173,14 @@ print(os.path.splitext(tower)[0])
 
 
 def delete_files():
-    dir = r'C:\Users\kbref\Desktop\computer_vision\Convolutional_NN\media\pictures\crop_images'
+    # dir = r'C:\Users\kbref\Desktop\computer_vision\Convolutional_NN\media\pictures\crop_images'
+    dir = BASE_DIR / '../media/pictures/crop_images'
     for file in os.listdir(dir):
         os.remove(os.path.join(dir, file))
 
-    dir2 = r'C:\Users\kbref\Desktop\computer_vision\Convolutional_NN\media\pictures\image_test'
+    # dir2 = r'C:\Users\kbref\Desktop\computer_vision\Convolutional_NN\media\pictures\image_test'
+    dir2 = BASE_DIR / '../media/pictures/image_test'
+
     for file in os.listdir(dir2):
         os.remove(os.path.join(dir2, file))
 
