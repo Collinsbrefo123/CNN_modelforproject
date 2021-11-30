@@ -48,7 +48,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'Convolutional_NN.urls'
+ROOT_URLCONF = ' .urls'
 
 TEMPLATES = [
     {
